@@ -1,0 +1,5 @@
+{
+    "dart.flutterHotReloadOnSave": "always",
+    "dart.previewHotReloadOnSaveWatcher": true,
+    "dart.flutterSdkPath": "C:\\src\\flutter\\bin"
+}
