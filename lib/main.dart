@@ -359,41 +359,41 @@ class _WelcomePageState extends State<WelcomePage> {
 
         // forgot pwd module
 
-        AnimatedContainer(
-          padding: EdgeInsets.all(32),
-          height: _pwdResetHeight,
-          curve: Curves.fastLinearToSlowEaseIn,
-          duration: Duration(milliseconds: 1000),
-          transform: Matrix4.translationValues(0, 0, 1),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(bottom: 20),
-                child: Text(
-                  'Reset Your Password',
-                  style: TextStyle(fontSize: 23),
-                ),
-              ),
-              InputwithIcon(
-                  icon: Icons.email, hint: "Enter your Institutional Mail"),
-              SizedBox(height: 20),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _pageState = 0;
-                  });
-                },
-                child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 32),
-                    child: PrimaryButton(buttonName: "Reset! ")),
-              ),
-            ],
-          ),
-        ),
+        // AnimatedContainer(
+        //   padding: EdgeInsets.all(32),
+        //   height: _pwdResetHeight,
+        //   curve: Curves.fastLinearToSlowEaseIn,
+        //   duration: Duration(milliseconds: 1000),
+        //   transform: Matrix4.translationValues(0, 0, 1),
+        //   decoration: BoxDecoration(
+        //       color: Colors.white,
+        //       borderRadius: BorderRadius.only(
+        //           topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+        //   child: Column(
+        //     children: [
+        //       Container(
+        //         margin: EdgeInsets.only(bottom: 20),
+        //         child: Text(
+        //           'Reset Your Password',
+        //           style: TextStyle(fontSize: 23),
+        //         ),
+        //       ),
+        //       InputwithIcon(
+        //           icon: Icons.email, hint: "Enter your Institutional Mail"),
+        //       SizedBox(height: 20),
+        //       GestureDetector(
+        //         onTap: () {
+        //           setState(() {
+        //             _pageState = 0;
+        //           });
+        //         },
+        //         child: Container(
+        //             margin: EdgeInsets.symmetric(horizontal: 32),
+        //             child: PrimaryButton(buttonName: "Reset! ")),
+        //       ),
+        //     ],
+        //   ),
+        // ),
       ],
     );
   }
