@@ -105,7 +105,7 @@ class _ResponsibilityState extends State<Responsibility>
                           color: Colors.black),
                     ),
                     horizontalTitleGap: width / 13,
-                    title: Text('Assistant to the regional manager'),
+                    title: Text('Public Relations Officer'),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -191,7 +191,7 @@ class _ResponsibilityState extends State<Responsibility>
                           color: Colors.black),
                     ),
                     horizontalTitleGap: width / 13,
-                    title: Text('aprasanti'),
+                    title: Text('Event Manager in Rotract Club, Chennai'),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -215,7 +215,7 @@ class _ResponsibilityState extends State<Responsibility>
                           color: Colors.black),
                     ),
                     horizontalTitleGap: width / 13,
-                    title: Text('M. Phil Computer Science'),
+                    title: Text('Red Cross Volunteer'),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -239,7 +239,7 @@ class _ResponsibilityState extends State<Responsibility>
                           color: Colors.black),
                     ),
                     horizontalTitleGap: width / 13,
-                    title: Text('M. Phil Computer Science'),
+                    title: Text('Music Producer'),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

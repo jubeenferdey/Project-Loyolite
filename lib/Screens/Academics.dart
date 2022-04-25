@@ -62,6 +62,17 @@ class _academicsState extends State<academics>
           appBar: AppBar(
             backgroundColor: Colors.white,
             toolbarHeight: 70,
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+                //_formkey.currentState.reset();
+              },
+              icon: Icon(
+                Icons.arrow_back_ios,
+                size: 20,
+                color: Colors.black,
+              ),
+            ),
             bottom: TabBar(
               controller: _tabController,
               indicatorPadding: EdgeInsets.only(top: 15),

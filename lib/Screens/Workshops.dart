@@ -38,6 +38,17 @@ class _workshopsState extends State<workshops> {
         appBar: AppBar(
           backgroundColor: Colors.grey[50],
           toolbarHeight: 70,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+              //_formkey.currentState.reset();
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              size: 20,
+              color: Colors.black,
+            ),
+          ),
           bottom: TabBar(
             indicatorPadding: EdgeInsets.only(top: 15),
             labelPadding: EdgeInsets.only(top: 20),
