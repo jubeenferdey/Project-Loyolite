@@ -146,6 +146,7 @@ class AuthWrapper extends StatelessWidget {
           final bool signedIn = snapshot.hasData;
           return signedIn ? Home() : WelcomePage();
         }
+
         return Container(
           color: Colors.black,
         );

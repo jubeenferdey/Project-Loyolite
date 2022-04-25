@@ -63,17 +63,20 @@ class Profile extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Center(
-                        child: Container(
-                            width: 190.0 / 1.5,
-                            height: 190.0 / 1.5,
-                            decoration: new BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: new DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: new AssetImage(
-                                      "assets/images/Gd.jpeg",
-                                    )))),
+                      Expanded(
+                        flex: 6,
+                        child: Center(
+                          child: Container(
+                              width: 190.0 / 1.5,
+                              height: 190.0 / 1.5,
+                              decoration: new BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: new DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: new AssetImage(
+                                        "assets/images/Loyola.png",
+                                      )))),
+                        ),
                       ),
                       Container(
                           child: Container(
@@ -130,7 +133,7 @@ class Profile extends StatelessWidget {
                           //style: GoogleFonts.montserrat(textStyle: titleStyle)
                         ),
                         subtitle: Text(
-                          'E. Gangadevi',
+                          'Jubeen Ferdey',
                           // style:
                           //  GoogleFonts.montserrat(textStyle: subTitleStyle)
                         ),
@@ -146,7 +149,7 @@ class Profile extends StatelessWidget {
                           // style: GoogleFonts.montserrat(textStyle: titleStyle)
                         ),
                         subtitle: Text(
-                          '19-UCA-107',
+                          '19-UCA-022',
                           // style:
                           //     GoogleFonts.montserrat(textStyle: subTitleStyle)
                         ),
@@ -162,7 +165,7 @@ class Profile extends StatelessWidget {
                           //style: GoogleFonts.montserrat(textStyle: titleStyle)
                         ),
                         subtitle: Text(
-                          '06/05/2001',
+                          '18/03/2002',
                           // style:
                           //     GoogleFonts.montserrat(textStyle: subTitleStyle)
                         ),
@@ -178,7 +181,7 @@ class Profile extends StatelessWidget {
                           // style: GoogleFonts.montserrat(textStyle: titleStyle)
                         ),
                         subtitle: Text(
-                          'Female',
+                          'Male',
                           // style:
                           //     GoogleFonts.montserrat(textStyle: subTitleStyle)
                         ),
