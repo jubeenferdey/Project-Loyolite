@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -31,6 +33,7 @@ Future<List> getData() async {
 
 class Profile extends StatelessWidget {
   @override
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -134,6 +137,7 @@ class Profile extends StatelessWidget {
                         ),
                         subtitle: Text(
                           'Jubeen Ferdey',
+
                           // style:
                           //  GoogleFonts.montserrat(textStyle: subTitleStyle)
                         ),
