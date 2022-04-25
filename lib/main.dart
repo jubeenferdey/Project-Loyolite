@@ -173,4 +173,3 @@ class Loading extends StatelessWidget {
     return Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 }
-// Comment to check the Git Pull Functionality
