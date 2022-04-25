@@ -111,7 +111,7 @@ class _WelcomePageState extends State<WelcomePage> {
   Widget build(BuildContext context) {
     windowHeight = MediaQuery.of(context).size.height;
     windowWidth = MediaQuery.of(context).size.width;
-    _loginHeight = windowHeight - 300;
+    _loginHeight = windowHeight - 250;
     _createAccHeight = windowHeight - 300;
     _pwdResetHeight = windowHeight - 300;
     switch (_pageState) {
@@ -126,7 +126,7 @@ class _WelcomePageState extends State<WelcomePage> {
         _loginOpacity = 1;
         _welcomeMargin = 100;
         // _loginHeight = windowHeight;
-        _loginHeight = _keyboardVisible ? windowHeight : windowHeight - 270;
+        _loginHeight = _keyboardVisible ? windowHeight : windowHeight - 100;
 
         break;
 
@@ -142,7 +142,7 @@ class _WelcomePageState extends State<WelcomePage> {
         _welcomeMargin = 90;
         _loginHeight = windowHeight;
         _loginYoffset = _keyboardVisible ? 40 : 300;
-        _loginHeight = _keyboardVisible ? windowHeight : windowHeight - 300;
+        _loginHeight = _keyboardVisible ? windowHeight : windowHeight - 100;
 
         break;
 
@@ -167,236 +167,242 @@ class _WelcomePageState extends State<WelcomePage> {
         break;
     }
 
-    return Stack(
-      children: [
-        AnimatedContainer(
-          curve: Curves.fastLinearToSlowEaseIn,
-          duration: Duration(milliseconds: 1500),
-          color: _bgcolor,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _pageState = 0;
-                  });
-                },
-                child: Container(
-                    child: Column(
-                  children: [
-                    AnimatedContainer(
-                        curve: Curves.fastLinearToSlowEaseIn,
-                        duration: Duration(milliseconds: 1500),
-                        margin: EdgeInsets.only(top: _welcomeMargin),
-                        child: Text('Welcome, User! ',
-                            style:
-                                TextStyle(color: _headingColor, fontSize: 30))),
-                    SizedBox(height: 3),
-                    Container(
-                      margin: const EdgeInsets.all(10),
-                      padding: EdgeInsets.symmetric(horizontal: 32),
-                      child: Text(
-                          'Loyola Diary allows you to Safely Upload your Certificates and retrieve them, whenever needed :) ',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 23,
-                            color: _subHeadingColor,
-                          )),
-                    )
-                  ],
-                )),
-              ),
-
-              // Welcome Container
-              SingleChildScrollView(
-                child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 80),
-                    child: Image.asset('assets/images/Loyola.png')),
-              ),
-              Container(
-                  child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    if (_pageState != 0) {
+    return Expanded(
+      child: Stack(
+        children: [
+          AnimatedContainer(
+            curve: Curves.fastLinearToSlowEaseIn,
+            duration: Duration(milliseconds: 1500),
+            color: _bgcolor,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
                       _pageState = 0;
-                    } else {
-                      _pageState = 1;
-                      //loginformkey.currentState.reset();
-                    }
-                  });
-                },
-                child: Container(
-                  margin: EdgeInsets.all(50),
-                  padding: EdgeInsets.all(20),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: Colors.blue[800],
-                      borderRadius: BorderRadius.circular(50)),
-                  child: Center(
-                      child: Text(
-                    'Get Started!',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
-                  )),
-                ),
-              ))
-            ],
-          ),
-        ),
-        // Login Container
-
-        Form(
-          child: Container(
-            child: AnimatedContainer(
-              padding: EdgeInsets.all(32),
-              height: _loginHeight,
-              width: _loginWidth,
-              curve: Curves.fastLinearToSlowEaseIn,
-              duration: Duration(milliseconds: 1000),
-              transform:
-                  Matrix4.translationValues(_loginXoffset, _loginYoffset, 1),
-              decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(_loginOpacity),
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30))),
-              child: Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(bottom: 20),
-                    child: Text(
-                      'Login to Continue',
-                      style: TextStyle(fontSize: 23),
-                    ),
-                  ),
-                  // GetEmail(
-                  //   icon: Icons.email,
-                  //   hint: "Institutional Mail",
-                  //   loginformkey: emailkey,
-                  // ),
-                  TextFormField(
-                    controller: emailkey,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(vertical: 23),
-                      labelText: "Instituitional Mail ID",
-                      //focusColor: Colors.blue[800],
-                      prefixIcon: Icon(Icons.email),
-                      border: OutlineInputBorder(
-                          // borderSide: BorderSide(color: Colors.blue[800], width: 2),
-                          borderRadius: BorderRadius.circular(50.0),
-                          gapPadding: 7.5),
-                    ),
-                    //ignore:missing_return
-                    validator: (String value) {
-                      if (value.isEmpty) {
-                        return 'Mail is Required.';
-                      }
-                    },
-                    onChanged: (String value) {
-                      email = value;
-                    },
-                  ),
-                  SizedBox(height: 22.5),
-                  TextFormField(
-                    key: loginformkey,
-                    obscureText: true,
-                    controller: passwordkey,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(vertical: 23),
-                      labelText: 'Password',
-                      prefixIcon: Icon(Icons.password),
-                      border: OutlineInputBorder(
-                          // borderSide:
-                          //     BorderSide(color: Colors.blueAccent, width: 32.0),
-                          borderRadius: BorderRadius.circular(50.0),
-                          gapPadding: 7.5),
-                    ),
-                    // ignore: missing_return
-                    validator: (String value) {
-                      if (value.isEmpty) {
-                        return 'Password is Required.';
-                      }
-                    },
-                    onChanged: (String value) {
-                      password = value;
-                    },
-                  ),
-
-                  // GetPassword(
-                  //     icon: Icons.password, hint: "Password", obscure: true),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        // //_pageState = 3;
-                        // context.read<AuthenticationService>().signIn(
-                        //       email: emailkey.text.trim(),
-                        //       password: passwordkey.text.trim(),
-                        //       context: context,
-                        // );
-                        // Navigator.push(context,
-                        //     MaterialPageRoute(builder: (context) => Home()));
-                      });
-                    },
-                    child: Container(
-                        child: Text(
-                      'Forgot Password',
-                      style: TextStyle(fontSize: 15, color: Colors.grey[600]),
-                    )),
-                  ),
-                  SizedBox(height: 70),
-                  Column(
+                    });
+                  },
+                  child: Container(
+                      child: Column(
                     children: [
-                      GestureDetector(
-                          onTap: () {
-                            // if (!loginformkey.currentState.validate()) {
-                            //   return;
-                            // }
-                            setState(() {
-                              context.read<AuthenticationService>().signIn(
-                                  email: emailkey.text.trim(),
-                                  password: passwordkey.text.trim(),
-                                  context: context,
-                                  key: loginformkey);
-                            });
-
-                            // Navigator.push(context,
-                            //     MaterialPageRoute(builder: (context) => Home()));
-                            // //login();
-                            // context.read<AuthenticationService>().signIn(
-                            //     email: emailkey.text.trim(),
-                            //     password: passwordkey.text.trim());
-                            print(emailkey.text.trim());
-                            print(passwordkey.text.trim());
-                          },
-                          child: PrimaryButton(buttonName: "Login")),
-                      SizedBox(height: 20),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CreateAccount1()));
-                          });
-                        },
-                        child: SecButton(
-                          secButtonName: "Create an Account",
-                        ),
+                      AnimatedContainer(
+                          curve: Curves.fastLinearToSlowEaseIn,
+                          duration: Duration(milliseconds: 1500),
+                          margin: EdgeInsets.only(top: _welcomeMargin),
+                          child: Text('Welcome Loyolite!',
+                              style: TextStyle(
+                                  color: _headingColor, fontSize: 30))),
+                      SizedBox(height: 3),
+                      Container(
+                        margin: const EdgeInsets.all(10),
+                        padding: EdgeInsets.symmetric(horizontal: 32),
+                        child: Text(
+                            'Loyola Diary allows you to Safely Upload your Certificates and retrieve them, whenever needed. ',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 23,
+                              color: _subHeadingColor,
+                            )),
                       )
                     ],
+                  )),
+                ),
+
+                // Welcome Container
+                SingleChildScrollView(
+                  child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 80),
+                      child: Image.asset('assets/images/Loyola.png')),
+                ),
+                Container(
+                    child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      if (_pageState != 0) {
+                        _pageState = 0;
+                      } else {
+                        _pageState = 1;
+                        //loginformkey.currentState.reset();
+                      }
+                    });
+                  },
+                  child: Container(
+                    margin: EdgeInsets.all(15),
+                    padding: EdgeInsets.all(20),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.blue[800],
+                        borderRadius: BorderRadius.circular(50)),
+                    child: Center(
+                        child: Text(
+                      'Get Started!',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    )),
                   ),
-                ],
+                ))
+              ],
+            ),
+          ),
+          // Login Container
+
+          Form(
+            child: Container(
+              child: AnimatedContainer(
+                padding: EdgeInsets.all(32),
+                height: _loginHeight,
+                width: _loginWidth,
+                curve: Curves.fastLinearToSlowEaseIn,
+                duration: Duration(milliseconds: 1000),
+                transform:
+                    Matrix4.translationValues(_loginXoffset, _loginYoffset, 1),
+                decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(_loginOpacity),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30))),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom: 20),
+                      child: Text(
+                        'Login to Continue',
+                        style: TextStyle(fontSize: 23),
+                      ),
+                    ),
+                    // GetEmail(
+                    //   icon: Icons.email,
+                    //   hint: "Institutional Mail",
+                    //   loginformkey: emailkey,
+                    // ),
+                    TextFormField(
+                      controller: emailkey,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(vertical: 23),
+                        labelText: "Instituitional Mail ID",
+                        //focusColor: Colors.blue[800],
+                        prefixIcon: Icon(Icons.email),
+                        border: OutlineInputBorder(
+                            // borderSide: BorderSide(color: Colors.blue[800], width: 2),
+                            borderRadius: BorderRadius.circular(50.0),
+                            gapPadding: 7.5),
+                      ),
+                      //ignore:missing_return
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return 'Mail is Required.';
+                        }
+                      },
+                      onChanged: (String value) {
+                        email = value;
+                      },
+                    ),
+                    SizedBox(height: 22.5),
+                    TextFormField(
+                      key: loginformkey,
+                      obscureText: true,
+                      controller: passwordkey,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(vertical: 23),
+                        labelText: 'Password',
+                        prefixIcon: Icon(Icons.password),
+                        border: OutlineInputBorder(
+                            // borderSide:
+                            //     BorderSide(color: Colors.blueAccent, width: 32.0),
+                            borderRadius: BorderRadius.circular(50.0),
+                            gapPadding: 7.5),
+                      ),
+                      // ignore: missing_return
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return 'Password is Required.';
+                        }
+                      },
+                      onChanged: (String value) {
+                        password = value;
+                      },
+                    ),
+
+                    // GetPassword(
+                    //     icon: Icons.password, hint: "Password", obscure: true),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          // //_pageState = 3;
+                          // context.read<AuthenticationService>().signIn(
+                          //       email: emailkey.text.trim(),
+                          //       password: passwordkey.text.trim(),
+                          //       context: context,
+                          // );
+                          // Navigator.push(context,
+                          //     MaterialPageRoute(builder: (context) => Home()));
+                        });
+                      },
+                      child: Container(
+                          child: Text(
+                        'Forgot Password',
+                        style: TextStyle(fontSize: 15, color: Colors.grey[600]),
+                      )),
+                    ),
+                    SizedBox(height: 10),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              // if (!loginformkey.currentState.validate()) {
+                              //   return;
+                              // }
+                              setState(() {
+                                context.read<AuthenticationService>().signIn(
+                                    email: emailkey.text.trim(),
+                                    password: passwordkey.text.trim(),
+                                    context: context,
+                                    key: loginformkey);
+                              });
+
+                              // Navigator.push(context,
+                              //     MaterialPageRoute(builder: (context) => Home()));
+                              // //login();
+                              // context.read<AuthenticationService>().signIn(
+                              //     email: emailkey.text.trim(),
+                              //     password: passwordkey.text.trim());
+                              print(emailkey.text.trim());
+                              print(passwordkey.text.trim());
+                            },
+                            child: PrimaryButton(buttonName: "Login"),
+                          ),
+                          SizedBox(height: 10),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            CreateAccount1()));
+                              });
+                            },
+                            child: SecButton(
+                              secButtonName: "Create an Account",
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

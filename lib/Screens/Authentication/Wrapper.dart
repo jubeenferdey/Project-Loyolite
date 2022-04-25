@@ -30,7 +30,7 @@ class Wrapper extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             home: Scaffold(
                 resizeToAvoidBottomInset: false,
-                body: SingleChildScrollView(
+                body: Container(
                   child: Center(child: Authenticate()),
                 ))));
   }

@@ -37,23 +37,23 @@ class _CreateAccount2State extends State<CreateAccount2> {
   // final AuthService _auth = AuthService();
   final GlobalKey<FormState> _formkey2 = GlobalKey<FormState>();
 
-  //signup
+  // signup
 
-  // Future<void> signUp() async {
-  //   try {
-  //     UserCredential usercredential = await FirebaseAuth.instance
-  //         .createUserWithEmailAndPassword(
-  //             email: email.text.trim(), password: password.text.trim());
+  Future<void> signUp() async {
+    try {
+      UserCredential usercredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: email.text.trim(), password: password.text.trim());
 
-  //     // User user = result.user;
-  //     // return _userFromFirebaseUser(user);
-  //   } catch (e) {
-  //     // return Card(
-  //     //   child: Text(e.toString()),
-  //     // );
-  //     print(e.toString());
-  //   }
-  // }
+      // User user = result.user;
+      // return _userFromFirebaseUser(user);
+    } catch (e) {
+      // return Card(
+      //   child: Text(e.toString()),
+      // );
+      print(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,21 +112,21 @@ class _CreateAccount2State extends State<CreateAccount2> {
                   // ),
                   GestureDetector(
                     onTap: () {
-                      // if (!_formkey2.currentState.validate()) {
-                      //   return;
-                      // }
+                      if (!_formkey2.currentState.validate()) {
+                        return;
+                      }
 
                       setState(() {
                         context.read<AuthenticationService>().signUp(
                               email: email.text.trim(),
                               password: password.text.trim(),
                               context: context,
-                              //key: _formkey2
+                              // key: _formkey2
                             );
-                        // signUp();
-                        // Navigator.push(context,
-                        //     MaterialPageRoute(builder: (context) => Home()));
-                        // _formkey2.currentState.reset();
+                        signUp();
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Home()));
+                        _formkey2.currentState.reset();
 
                         print(_Staff_Email);
                         print(_Staff_password);

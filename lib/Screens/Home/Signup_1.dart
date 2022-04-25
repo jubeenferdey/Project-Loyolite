@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:loyolite/Screens/Home/RootScreen.dart';
 import 'package:loyolite/main.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:loyolite/Services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:loyolite/models/user.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -25,7 +27,8 @@ int Staff_Shift = 0;
 
 String Staff_Name = "";
 String firstName = "";
-String Staff_Age = "";
+final Staff_Age = new DateTime.now();
+String formatter = DateFormat('yMd').format(Staff_Age);
 String Staff_Gender = "";
 String Staff_DOB = "";
 String Staff_PhNum = "";
@@ -61,7 +64,6 @@ class _CreateAccount1State extends State<CreateAccount1> {
                 backgroundColor: Colors.white,
                 appBar: AppBar(
                   elevation: 0,
-                  brightness: Brightness.light,
                   backgroundColor: Colors.white,
                   leading: IconButton(
                     onPressed: () {
@@ -74,6 +76,7 @@ class _CreateAccount1State extends State<CreateAccount1> {
                       color: Colors.black,
                     ),
                   ),
+                  systemOverlayStyle: SystemUiOverlayStyle.dark,
                 ),
                 body: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
@@ -88,12 +91,12 @@ class _CreateAccount1State extends State<CreateAccount1> {
                           children: [
                             SizedBox(height: 10),
                             Text(
-                              "Create an Account",
+                              "Let's get you Started",
                               style: TextStyle(
                                   fontSize: 30, fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              "Let us know a bit about you,",
+                              "Create an Account",
                               style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
@@ -101,8 +104,8 @@ class _CreateAccount1State extends State<CreateAccount1> {
                             ),
                             SizedBox(height: 20),
                             _name(),
-                            SizedBox(height: 20),
-                            _Age(),
+                            SizedBox(height: 10),
+                            // _Age(),
                             SizedBox(height: 10),
                             _DOB(),
                             SizedBox(height: 10),
@@ -128,9 +131,6 @@ class _CreateAccount1State extends State<CreateAccount1> {
                             ),
                             _Shift(),
                             _Gender(),
-                            SizedBox(
-                              height: 5,
-                            ),
                             _MaritalSt(),
                             SizedBox(
                               height: 30,
@@ -211,23 +211,23 @@ Widget _name() {
 
 //AGE
 // ignore: non_constant_identifier_names
-Widget _Age() {
-  return TextFormField(
-    maxLength: 2,
+// Widget _Age() {
+//   return TextFormField(
+//     maxLength: 2,
 
-    decoration: InputDecoration(labelText: 'Age'),
-    keyboardType: TextInputType.number,
-    // ignore: missing_return
-    // validator: (String value) {
-    //   if (value.isEmpty) {
-    //     return 'Age is Required';
-    //   }
-    // },
-    onChanged: (String value) {
-      Staff_Age = value;
-    },
-  );
-}
+//     decoration: InputDecoration(labelText: 'Age'),
+//     keyboardType: TextInputType.number,
+//     // ignore: missing_return
+//     // validator: (String value) {
+//     //   if (value.isEmpty) {
+//     //     return 'Age is Required';
+//     //   }
+//     // },
+//     onChanged: (String value) {
+//       Staff_Age = value;
+//     },
+//   );
+// }
 
 // DOB
 // ignore: non_constant_identifier_names
@@ -625,7 +625,6 @@ class __MaritalStState extends State<_MaritalSt> {
               'Status:',
               style: TextStyle(color: Colors.grey[700], fontSize: 17.5),
             ),
-            SizedBox(width: 10),
             Text(
               'UnMarried',
               style: TextStyle(color: Colors.grey[700], fontSize: 17.5),

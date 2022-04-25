@@ -25,7 +25,7 @@ class __SettingsState extends State<_Settings> {
       theme: ThemeData(
         primaryColor: Colors.blue[500],
         primaryColorLight: Color(0xFFFBE0E6),
-        accentColor: Color(0xFF1B1F32),
+        //accentColor: Color(0xFF1B1F32),
       ),
       home: _Settings(),
     );
@@ -58,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _inAppReview.requestReview();
     } else {
       print('open actual store listing');
-      // TODO: use your own store ids
+
       _inAppReview.openStoreListing(
         appStoreId: '<your app store id>',
         microsoftStoreId: '<your microsoft store id>',
@@ -82,7 +82,6 @@ class _MyHomePageState extends State<MyHomePage> {
       onSubmitted: (response) {
         print('rating: ${response.rating}, comment: ${response.comment}');
 
-        // TODO: add your own logic
         if (response.rating < 3.0) {
           // send their comments to your email or anywhere you wish
           // ask the user to contact you instead of leaving a bad review
