@@ -1,3 +1,5 @@
+import 'dart:core';
+
 import 'package:flutter/cupertino.dart';
 import 'package:loyolite/Responsiblities_add.dart';
 import 'package:loyolite/main.dart';
@@ -10,7 +12,10 @@ void main() {
   runApp(MaterialApp());
 }
 
-String _Staff_Email, _Staff_password, _Staff_passwordCheck;
+String _Staff_Email = '';
+String _Staff_password = '';
+String _Staff_passwordCheck = '';
+
 TextEditingController _password = TextEditingController();
 TextEditingController _passwordCheck = TextEditingController();
 

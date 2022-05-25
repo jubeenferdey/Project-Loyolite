@@ -30,7 +30,7 @@ class Items {
 }
 
 class HomeState extends State<Home> {
-  Future<bool> _onBackPressed() {
+  Future _onBackPressed() {
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -48,57 +48,54 @@ class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _onBackPressed,
-      child: Scaffold(
-        //backgroundColor: Color(0xff392850),
+    return Scaffold(
+      //backgroundColor: Color(0xff392850),
 
-        backgroundColor: Colors.grey[50],
-        body: Column(
-          children: <Widget>[
-            SizedBox(
-              height: 75,
+      backgroundColor: Colors.grey[50],
+      body: Column(
+        children: <Widget>[
+          SizedBox(
+            height: 75,
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 16, right: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("Teacher's Diary",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold)),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Text("Dashboard",
+                        style: TextStyle(
+                            color: Color(0xffa29aac),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600)),
+                  ],
+                ),
+                // IconButton(
+                //   alignment: Alignment.topCenter,
+                //   icon: Image.asset(
+                //     "assets/notification.png",
+                //     width: 24,
+                //   ),
+                //   onPressed: () {},
+                // )
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 16, right: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text("Teacher's Diary",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold)),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Text("Dashboard",
-                          style: TextStyle(
-                              color: Color(0xffa29aac),
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600)),
-                    ],
-                  ),
-                  // IconButton(
-                  //   alignment: Alignment.topCenter,
-                  //   icon: Image.asset(
-                  //     "assets/notification.png",
-                  //     width: 24,
-                  //   ),
-                  //   onPressed: () {},
-                  // )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            GridDashboard()
-          ],
-        ),
+          ),
+          SizedBox(
+            height: 40,
+          ),
+          GridDashboard()
+        ],
       ),
     );
   }

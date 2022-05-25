@@ -3,18 +3,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:loyolite/Screens/Authentication/authClass.dart';
+// import 'package:loyolite/Screens/Authentication/authClass.dart';
 //import 'package:loyolite/Screens/Authentication/authProvider.dart';
 import 'package:provider/provider.dart';
-import 'package:loyolite/Screens/Authentication/Wrapper.dart';
+// import 'package:loyolite/Screens/Authentication/Wrapper.dart';
 import 'package:loyolite/Screens/Home/Home.dart';
 import 'package:loyolite/Screens/Home/RootScreen.dart';
 import 'package:loyolite/Screens/Home/Signup_1.dart';
-import 'package:loyolite/Services/auth.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+void main() {
   runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
       color: Colors.white,
@@ -24,7 +21,7 @@ Future<void> main() async {
             color: Colors.white,
             margin: EdgeInsets.only(top: 100),
             child: AnimatedSplashScreen(
-              nextScreen: Wrapper(),
+              nextScreen: MyApp(),
               splash: Image.asset('assets/images/Loyola.png'),
               splashTransition: SplashTransition.fadeTransition,
               splashIconSize: 305,
@@ -50,7 +47,7 @@ class _InputwithIconState extends State<InputwithIcon> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey[400], width: 2),
+          border: Border.all(color: Colors.grey, width: 2),
           borderRadius: BorderRadius.circular(50)),
       child: Container(
         child: Row(
@@ -115,7 +112,7 @@ class _SecButtonState extends State<SecButton> {
     return Container(
       decoration: BoxDecoration(
           border: Border.all(
-            color: Colors.blue[800],
+            color: Colors.blue,
             width: 2,
           ),
           borderRadius: BorderRadius.circular(50)),
@@ -132,28 +129,28 @@ class _SecButtonState extends State<SecButton> {
 
 // Home Controller
 
-class AuthWrapper extends StatelessWidget {
-  const AuthWrapper({Key key}) : super(key: key);
+// class AuthWrapper extends StatelessWidget {
+//   const AuthWrapper({Key key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    final AuthService auth = Provider.of(context).auth;
+//   @override
+//   Widget build(BuildContext context) {
+//     final AuthService auth = Provider.of(context).auth;
 
-    return StreamBuilder(
-      stream: auth.onAuthStateChanged,
-      builder: (context, AsyncSnapshot<User> snapshot) {
-        if (snapshot.connectionState == ConnectionState.active) {
-          final bool signedIn = snapshot.hasData;
-          return signedIn ? Home() : WelcomePage();
-        }
+//     return StreamBuilder(
+//       stream: auth.onAuthStateChanged,
+//       builder: (context, AsyncSnapshot<User> snapshot) {
+//         if (snapshot.connectionState == ConnectionState.active) {
+//           final bool signedIn = snapshot.hasData;
+//           return signedIn ? Home() : WelcomePage();
+//         }
 
-        return Container(
-          color: Colors.black,
-        );
-      },
-    );
-  }
-}
+//         return Container(
+//           color: Colors.black,
+//         );
+//       },
+//     );
+//   }
+// }
 
 class ErrorWidget extends StatelessWidget {
   @override

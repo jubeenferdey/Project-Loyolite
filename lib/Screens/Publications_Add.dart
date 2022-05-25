@@ -114,12 +114,13 @@ Widget _Name() {
   return TextFormField(
       decoration: InputDecoration(labelText: 'Title'),
       keyboardType: TextInputType.text,
+      // ignore: missing_return
       validator: (String value) {
         if (value.isEmpty) {
           return "Title is Required";
         }
       },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }
@@ -128,12 +129,13 @@ Widget _Organization() {
   return TextFormField(
       decoration: InputDecoration(labelText: 'Patent ID'),
       keyboardType: TextInputType.text,
+      // ignore: missing_return
       validator: (String value) {
         if (value.isEmpty) {
           return "Organization is Required";
         }
       },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }
@@ -142,12 +144,13 @@ Widget _Duration() {
   return TextFormField(
       decoration: InputDecoration(labelText: 'Published Year '),
       keyboardType: TextInputType.text,
-      validator: (String value) {
+      // ignore: missing_return
+      validator: (value) {
         if (value.isEmpty) {
           return "Duration is Required";
         }
       },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }
@@ -156,12 +159,13 @@ Widget _Location() {
   return TextFormField(
       decoration: InputDecoration(labelText: 'Location (eg: Chennai)'),
       keyboardType: TextInputType.text,
-      validator: (String value) {
+      // ignore: missing_return
+      validator: (value) {
         if (value.isEmpty) {
           return "Location is Required";
         }
       },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }

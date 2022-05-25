@@ -1,7 +1,7 @@
 import 'package:about/about.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
-import 'package:loyolite/Screens/Authentication/Firebase.dart';
+// import 'package:loyolite/Screens/Authentication/Firebase.dart';
 import 'package:loyolite/Screens/Home/Home.dart';
 import 'package:loyolite/Screens/Home/RootScreen.dart';
 //import 'package:loyolite/Screens/Authentication/authProvider.dart';
@@ -101,6 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void alertFaq(BuildContext context) {
     Widget okButton = TextButton(
+      onPressed: () {},
       child: Text("OK"),
       // onPressed: () {
       //   Navigator.pop(context);
@@ -184,12 +185,12 @@ class _MyHomePageState extends State<MyHomePage> {
           onPressed: () {
             final snackBar = SnackBar(content: Text('Logged Out Successfully'));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            context.read<AuthenticationService>().signOut(context: context);
-            // if (Navigator.of(context).canPop()) {
-            //   Navigator.of(context).pop();
-            // }
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (context) => MyApp()));
+            // context.read<AuthenticationService>().signOut(context: context);
+            if (Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
+            }
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => MyApp()));
 
             // final action = await AlertDialogs.yesCancelDialog(
             //     context, 'Logout', 'Are you sure?');

@@ -1,26 +1,31 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/cupertino.dart';
-import 'package:loyolite/Screens/Authentication/authProvider.dart';
-import 'package:loyolite/Screens/Authentication/Firebase.dart';
 import 'package:loyolite/Screens/Home/Home.dart';
 import 'package:loyolite/Screens/Home/RootScreen.dart';
 import 'package:loyolite/Screens/Responsiblities_add.dart';
 import 'package:loyolite/main.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:loyolite/Screens/Home/Signup_1.dart';
-import 'package:loyolite/Services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:loyolite/models/user.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() {
   runApp(MaterialApp());
 }
 
 //to store the values
-String _Staff_Email, _Staff_password, _Staff_passwordCheck;
+// ignore: unused_element
+String _Staff_Email = "";
+String _Staff_password = "";
+String _Staff_passwordCheck = "";
 String Email = "";
 
 // to  check the email check the passwords
@@ -34,29 +39,59 @@ class CreateAccount2 extends StatefulWidget {
 }
 
 class _CreateAccount2State extends State<CreateAccount2> {
-  // final AuthService _auth = AuthService();
   final GlobalKey<FormState> _formkey2 = GlobalKey<FormState>();
 
   // signup
 
-  Future<void> signUp() async {
-    try {
-      UserCredential usercredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-              email: email.text.trim(), password: password.text.trim());
-
-      // User user = result.user;
-      // return _userFromFirebaseUser(user);
-    } catch (e) {
-      // return Card(
-      //   child: Text(e.toString()),
-      // );
-      print(e.toString());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    String url = "http://192.168.56.1/Project-Loyolite/lib/Db/signup.php";
+    Future<void> signUp() async {
+      // print(url);
+      // print(emailkey.text.trim());
+      // print(passwordkey.text.trim());
+      var res = await http.post(Uri.parse(url), body: {
+        "staffID": Staff_ID.toString(),
+        "name": Staff_Name,
+        "dob": Staff_DOB.toString(),
+        "phnum": Staff_PhNum.toString(),
+        "address": Staff_Address,
+        "shift": Staff_Shift.toString(),
+        "role": Staff_Designation,
+        "dept": Staff_Dept,
+        "gender": Staff_Gender,
+        "responsibility": Staff_Responsiblity,
+        "maritalStatus": Staff_MarritalSt,
+        "password": password.text,
+        "email": email.text
+      });
+      var data = jsonDecode(res.body);
+      print("data: $data");
+      if (data == "Success") {
+        Fluttertoast.showToast(
+            msg: "Data Stored Successfully",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black54,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        final snackBar = SnackBar(
+          content: Text('Account Created :)'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        setState(() {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Home()));
+        });
+      } else if (data == "Error") {
+        final snackBar = SnackBar(
+          content: Text('There has been an Error Creating your Account.'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
@@ -67,7 +102,7 @@ class _CreateAccount2State extends State<CreateAccount2> {
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
-            _formkey2.currentState.reset();
+            // _formkey2.currentState.reset();
           },
           icon: Icon(
             Icons.arrow_back_ios,
@@ -112,24 +147,24 @@ class _CreateAccount2State extends State<CreateAccount2> {
                   // ),
                   GestureDetector(
                     onTap: () {
-                      if (!_formkey2.currentState.validate()) {
-                        return;
+                      if (_formkey2.currentState.validate()) {
+                        signUp();
                       }
 
                       setState(() {
-                        context.read<AuthenticationService>().signUp(
-                              email: email.text.trim(),
-                              password: password.text.trim(),
-                              context: context,
-                              // key: _formkey2
-                            );
-                        signUp();
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Home()));
-                        _formkey2.currentState.reset();
+                        // context.read<AuthenticationService>().signUp(
+                        //       email: email.text.trim(),
+                        //       password: password.text.trim(),
+                        //       context: context,
+                        //       // key: _formkey2
+                        //     );
+                        // signUp();
+                        // Navigator.push(context,
+                        //     MaterialPageRoute(builder: (context) => Home()));
+                        // _formkey2.currentState.reset();
 
-                        print(_Staff_Email);
-                        print(_Staff_password);
+                        // print(_Staff_Email);
+                        // print(_Staff_password);
                       });
                     },
                     child: Container(
@@ -178,11 +213,11 @@ Widget _Password() {
     obscureText: true,
     controller: password,
     // ignore: missing_return
-    // validator: (String value) {
-    //   if (value.isEmpty) {
-    //     return 'Password is Required';
-    //   }
-    // },
+    validator: (value) {
+      if (value.isEmpty) {
+        return 'Password is Required';
+      }
+    },
     onChanged: (String value) {
       _Staff_password = value;
     },
@@ -200,11 +235,11 @@ Widget _PasswordCheck() {
     keyboardType: TextInputType.text,
     obscureText: true,
     controller: _passwordCheck,
-    onSaved: (String value) {
+    onSaved: (value) {
       _Staff_passwordCheck = value;
     },
     // ignore: missing_return
-    validator: (String value) {
+    validator: (value) {
       if (value.isEmpty) {
         return 'Password is Required';
       }

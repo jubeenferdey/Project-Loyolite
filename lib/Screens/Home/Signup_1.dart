@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:loyolite/Screens/Home/Signup_2.dart';
-import 'package:loyolite/Services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:loyolite/models/user.dart';
@@ -20,15 +19,26 @@ void main() {
 }
 
 final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+// TextEditingController StaffName = new TextEditingController();
+// TextEditingController StaffDOB = new TextEditingController();
+// TextEditingController StaffPhNum = new TextEditingController();
+// TextEditingController StaffDes = new TextEditingController();
+// TextEditingController StaffID = new TextEditingController();
+// TextEditingController StaffAddress = new TextEditingController();
+// TextEditingController StaffName = new TextEditingController();
+// TextEditingController StaffName = new TextEditingController();
+// TextEditingController StaffName = new TextEditingController();
+// TextEditingController StaffName = new TextEditingController();
+
 double windowHeight = 0;
 double windowWidth = 0;
 
 int Staff_Shift = 0;
 
 String Staff_Name = "";
-String firstName = "";
-final Staff_Age = new DateTime.now();
-String formatter = DateFormat('yMd').format(Staff_Age);
+// String firstName = "";
+// final Staff_Age = new DateTime.now();
+// String formatter = DateFormat('yMd').format(Staff_Age);
 String Staff_Gender = "";
 String Staff_DOB = "";
 String Staff_PhNum = "";
@@ -38,9 +48,9 @@ String Staff_Dept = "";
 String Staff_Designation = "";
 String Staff_MarritalSt = "";
 String Staff_Responsiblity = "";
-String staff_ID = "";
+String Staff_ID = "";
 
-String valueChoose;
+String valueChoose = '';
 
 class CreateAccount1 extends StatefulWidget {
   @override
@@ -141,8 +151,7 @@ class _CreateAccount1State extends State<CreateAccount1> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                //  if (!_formkey.currentState.validate())
-                                {
+                                if (_formkey.currentState.validate()) {
                                   setState(() {
                                     {
                                       Navigator.push(
@@ -156,11 +165,10 @@ class _CreateAccount1State extends State<CreateAccount1> {
                                 }
 
                                 print(Staff_Name);
-                                print(Staff_Age);
                                 print(Staff_DOB);
                                 print(Staff_PhNum);
                                 print(Staff_Address);
-                                print(Staff_Email);
+                                print(Staff_Shift);
                                 print(Staff_Designation);
                                 print(Staff_Dept);
                                 print(Staff_Gender);
@@ -197,14 +205,14 @@ Widget _name() {
   return TextFormField(
     decoration: InputDecoration(labelText: 'Name'),
     // ignore: missing_return
-    // validator: (String value) {
-    //   if (value.isEmpty) {
-    //     return 'Name is Required';
-    //   }
-    // },
+    validator: (value) {
+      if (value.isEmpty) {
+        return 'Name is Required';
+      }
+    },
     onChanged: (String value) {
       Staff_Name = value;
-      firstName = value;
+      // firstName = value;
     },
   );
 }
@@ -240,11 +248,11 @@ Widget _DOB() {
             decoration: InputDecoration(labelText: 'DOB (DD/MM/YYYY)'),
 
             // ignore: missing_return
-            // validator: (String value) {
-            //   if (value.isEmpty) {
-            //     return 'DOB is Required';
-            //   }
-            // },
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'DOB is Required';
+              }
+            },
             onChanged: (String value) {
               Staff_DOB = value;
             }),
@@ -261,11 +269,11 @@ Widget _PhNum() {
       decoration: InputDecoration(labelText: 'Phone Number'),
       keyboardType: TextInputType.number,
       // ignore: missing_return
-      // validator: (String value) {
-      //   if (value.isEmpty) {
-      //     return "Phone Number is Required";
-      //   }
-      // },
+      validator: (value) {
+        if (value.isEmpty) {
+          return "Phone Number is Required";
+        }
+      },
       onChanged: (String value) {
         Staff_PhNum = value;
       });
@@ -321,7 +329,7 @@ class __DesignationState extends State<_Designation> {
                           //fontWeight: FontWeight.w600,
                           fontFamily: 'Nunito'),
                     ),
-                    onChanged: (String value) {
+                    onChanged: (value) {
                       setState(() {
                         valueChoose = value;
                         Staff_Designation = value;
@@ -373,8 +381,8 @@ class _DepartmentState extends State<Department> {
                       ),
                       onChanged: (newvalue) {
                         setState(() {
-                          valueChoosed = newvalue;
-                          Staff_Dept = newvalue;
+                          valueChoosed = newvalue.toString();
+                          Staff_Dept = newvalue.toString();
                         });
                       },
                       items: <String>[
@@ -438,13 +446,15 @@ Widget _Responsiblity() {
 Widget _StaffID() {
   return TextFormField(
       decoration: InputDecoration(labelText: 'Staff ID'),
-      // validator: (String value) {
-      //   if (value.isEmpty) {
-      //     return 'Staff ID is Required';
-      //   }
-      // },
+      // ignore: missing_return
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Staff ID is Required';
+        }
+        return null;
+      },
       onChanged: (String value) {
-        staff_ID = value;
+        Staff_ID = value;
       });
 }
 
@@ -456,11 +466,11 @@ Widget _Address() {
     keyboardType: TextInputType.streetAddress,
     decoration: InputDecoration(labelText: 'Address'),
     //ignore: missing_return
-    // validator: (String value) {
-    //   if (value.isEmpty) {
-    //     return 'Address is Required';
-    //   }
-    // },
+    validator: (value) {
+      if (value.isEmpty) {
+        return 'Address is Required';
+      }
+    },
     onChanged: (String value) {
       Staff_Address = value;
     },
@@ -509,7 +519,7 @@ class __GenderState extends State<_Gender> {
             Radio(
                 value: 1,
                 groupValue: selectedRadio,
-                onChanged: (val) {
+                onChanged: (int val) {
                   setSelectedRadio(val);
                   Staff_Gender = "Male";
                 }),
@@ -520,7 +530,7 @@ class __GenderState extends State<_Gender> {
             Radio(
                 value: 2,
                 groupValue: selectedRadio,
-                onChanged: (val) {
+                onChanged: (int val) {
                   setSelectedRadio(val);
                   Staff_Gender = "Female";
                 })
@@ -572,7 +582,7 @@ class __ShiftState extends State<_Shift> {
             Radio(
                 value: 1,
                 groupValue: selectedRadio,
-                onChanged: (val) {
+                onChanged: (int val) {
                   setSelectedRadio(val);
                 }),
             SizedBox(width: 20),
@@ -583,7 +593,7 @@ class __ShiftState extends State<_Shift> {
             Radio(
                 value: 2,
                 groupValue: selectedRadio,
-                onChanged: (val) {
+                onChanged: (int val) {
                   setSelectedRadio(val);
                 })
           ],
@@ -625,6 +635,7 @@ class __MaritalStState extends State<_MaritalSt> {
               'Status:',
               style: TextStyle(color: Colors.grey[700], fontSize: 17.5),
             ),
+            SizedBox(width: 20),
             Text(
               'UnMarried',
               style: TextStyle(color: Colors.grey[700], fontSize: 17.5),
@@ -632,7 +643,7 @@ class __MaritalStState extends State<_MaritalSt> {
             Radio(
                 value: 1,
                 groupValue: selectedRadio,
-                onChanged: (val) {
+                onChanged: (int val) {
                   setSelectedRadio(val);
                   Staff_MarritalSt = 'UnMarried';
                 }),
@@ -643,7 +654,7 @@ class __MaritalStState extends State<_MaritalSt> {
             Radio(
                 value: 2,
                 groupValue: selectedRadio,
-                onChanged: (val) {
+                onChanged: (int val) {
                   setSelectedRadio(val);
                   Staff_MarritalSt = 'Married';
                 })

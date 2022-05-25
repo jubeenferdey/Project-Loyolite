@@ -123,7 +123,7 @@ Widget _Name() {
       //     return "Name is Required";
       //   }
       // },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }
@@ -138,7 +138,7 @@ Widget _Description() {
       //     return "Department is Required";
       //   }
       // },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }
@@ -153,7 +153,7 @@ Widget _Duration() {
       //     return "Duration is Required";
       //   }
       // },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }
@@ -167,7 +167,7 @@ Widget _Location() {
       //     return "Location is Required";
       //   }
       // },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }

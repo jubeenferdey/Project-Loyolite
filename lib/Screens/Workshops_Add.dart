@@ -126,7 +126,7 @@ Widget _Name() {
       //     return "Name is Required";
       //   }
       // },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }
@@ -141,7 +141,7 @@ Widget _Description() {
       //     return "Department is Required";
       //   }
       // },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }
@@ -156,7 +156,7 @@ Widget _Duration() {
       //     return "Duration is Required";
       //   }
       // },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }
@@ -170,7 +170,7 @@ Widget _Location() {
       //     return "Location is Required";
       //   }
       // },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }
@@ -226,7 +226,7 @@ class _WorkshopTypeState extends State<WorkshopType> {
                           //fontWeight: FontWeight.w600,
                           fontFamily: 'Nunito'),
                     ),
-                    onChanged: (String value) {
+                    onChanged: (value) {
                       setState(() {
                         valueChoose = value;
                         //_Staff_Designation = value;
@@ -264,12 +264,12 @@ class _AttachmentContainerState extends State<AttachmentContainer> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      iconCreation(Icons.add, Colors.grey[600], 'Add'),
+                      iconCreation(Icons.add, Colors.grey, 'Add'),
                       SizedBox(width: 60),
-                      iconCreation(Icons.link, Colors.grey[600], 'Link'),
+                      iconCreation(Icons.link, Colors.grey, 'Link'),
                       SizedBox(width: 60),
                       iconCreation(
-                          Icons.drive_folder_upload, Colors.grey[600], 'Drive')
+                          Icons.drive_folder_upload, Colors.grey, 'Drive')
                     ],
                   )
                 ],

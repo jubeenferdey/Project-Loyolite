@@ -1,11 +1,20 @@
 import 'package:flutter/cupertino.dart';
-import 'package:loyolite/create_account1.dart';
+import 'package:loyolite/Screens/Academics.dart';
+import 'package:loyolite/Screens/Home/Signup_1.dart';
 import 'package:loyolite/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:loyolite/create_account2.dart';
-import 'package:loyolite/Conference_CertAdd.dart';
+import 'package:loyolite/Screens/Home/Signup_2.dart';
+import 'package:loyolite/Screens/Workshop_Certificate_Upload.dart';
+import 'dart:io';
+import 'dart:convert';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -97,8 +106,7 @@ class _CertificateAddState extends State<CertificateAdd> {
                         // Navigator.push(
                         //     context,
                         //     MaterialPageRoute(
-                        //         builder: (context) => Conf_CertificateAdd()));
-                        // _formkey2.currentState.reset();
+                        //         builder: (context) => academics()));
                       });
                     },
                     child: PrimaryButton(buttonName: "Add Attachments"),
@@ -195,12 +203,15 @@ class _AttachmentContainerState extends State<AttachmentContainer> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      iconCreation(Icons.add, Colors.grey[600], 'Add'),
+                      GestureDetector(
+                          onTap: () => {_openFileExplorer(), print("Tapped")},
+                          child:
+                              iconCreation(Icons.add, Colors.grey[600], 'Add')),
                       SizedBox(width: 60),
                       iconCreation(Icons.link, Colors.grey[600], 'Link'),
                       SizedBox(width: 60),
-                      iconCreation(
-                          Icons.drive_folder_upload, Colors.grey[600], 'Drive')
+                      // iconCreation(
+                      //     Icons.drive_folder_upload, Colors.grey[600], 'Drive')
                     ],
                   )
                 ],
@@ -226,4 +237,34 @@ Widget iconCreation(IconData icon, Color color, String text) {
     SizedBox(height: 5),
     Text(text)
   ]);
+}
+
+List<PlatformFile> _files;
+
+void uploadImage() async {
+  final uri =
+      Uri.parse('http://192.168.56.1/teachers_diary/lib/Db/fileupload.php');
+  var request = http.MultipartRequest('POST', uri);
+  request.fields['name'] = _files.first.path.toString().split("/").last;
+  request.fields['path'] = _files.first.path.toString();
+  var pic = await http.MultipartFile.fromPath(
+      "filePath", _files.first.path.toString());
+  request.files.add(pic);
+  var response = await request.send();
+
+  if (response.statusCode == 200) {
+    print(_files);
+    print('Image Uploded');
+  } else {
+    print('Image Not Uploded');
+  }
+  // setState(() {});
+}
+
+void _openFileExplorer() async {
+  _files = (await FilePicker.platform.pickFiles(
+          type: FileType.any, allowMultiple: false, allowedExtensions: null))
+      .files;
+
+  print('Loaded file path is : ${_files.first.path}');
 }

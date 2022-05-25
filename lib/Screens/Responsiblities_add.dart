@@ -121,7 +121,7 @@ Widget _Name() {
       //     return "Name is Required";
       //   }
       // },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }
@@ -135,7 +135,7 @@ Widget _Organization() {
       //     return "Organization is Required";
       //   }
       // },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }
@@ -149,7 +149,7 @@ Widget _Duration() {
       //     return "Duration is Required";
       //   }
       // },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }
@@ -163,7 +163,7 @@ Widget _Location() {
       //     return "Location is Required";
       //   }
       // },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }
@@ -214,7 +214,7 @@ class _ResponsibilityTypeState extends State<ResponsibilityType> {
                           //fontWeight: FontWeight.w600,
                           fontFamily: 'Nunito'),
                     ),
-                    onChanged: (String value) {
+                    onChanged: (value) {
                       setState(() {
                         valueChoose = value;
                         //_Staff_Designation = value;

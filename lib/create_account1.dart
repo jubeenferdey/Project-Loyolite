@@ -15,22 +15,22 @@ void main() {
 double windowHeight = 0;
 double windowWidth = 0;
 
-int _Staff_Shift;
+int _Staff_Shift = 0;
 
-String _Staff_Name;
-String _Staff_Age;
-String _Staff_Gender;
-String _Staff_DOB;
-String _Staff_PhNum;
-String _Staff_Email;
-String _Staff_Address;
-String _Staff_Dept;
-String _Staff_Designation;
-String _Staff_MarritalSt;
-String _Staff_Responsiblity;
-String _staff_ID;
+String _Staff_Name = '';
+String _Staff_Age = '';
+String _Staff_Gender = '';
+String _Staff_DOB = '';
+String _Staff_PhNum = '';
+String _Staff_Email = '';
+String _Staff_Address = '';
+String _Staff_Dept = '';
+String _Staff_Designation = '';
+String _Staff_MarritalSt = '';
+String _Staff_Responsiblity = '';
+String _staff_ID = '';
 
-String valueChoose;
+String valueChoose = "";
 
 class CreateAccount1 extends StatefulWidget {
   @override
@@ -315,8 +315,8 @@ class __DesignationState extends State<_Designation> {
                     ),
                     onChanged: (String value) {
                       setState(() {
-                        valueChoose = value;
-                        _Staff_Designation = value;
+                        valueChoose = value.toString();
+                        _Staff_Designation = value.toString();
                       });
                     },
                   ),
@@ -363,7 +363,7 @@ class _DepartmentState extends State<Department> {
                         color: Colors.grey[700],
                         fontFamily: 'Nunito',
                       ),
-                      onChanged: (newvalue) {
+                      onChanged: (String newvalue) {
                         setState(() {
                           valueChoosed = newvalue;
                           _Staff_Dept = newvalue;
@@ -422,7 +422,7 @@ Widget _Responsiblity() {
   return TextFormField(
       decoration:
           InputDecoration(labelText: 'Responsiblity (eg. Dean of Students)'),
-      onSaved: (String value) {
+      onSaved: (value) {
         _Staff_Responsiblity = value;
       });
 }
@@ -430,8 +430,8 @@ Widget _Responsiblity() {
 Widget _StaffID() {
   return TextFormField(
       decoration: InputDecoration(labelText: 'Staff ID'),
-      onSaved: (String value) {
-        _staff_ID = value;
+      onSaved: (value) {
+        _staff_ID = value.toString();
       });
 }
 
@@ -448,8 +448,8 @@ Widget _Address() {
     //     return 'Address is Required';
     //   }
     // },
-    onSaved: (String value) {
-      _Staff_Address = value;
+    onSaved: (value) {
+      _Staff_Address = value.toString();
     },
   );
 }
@@ -496,9 +496,9 @@ class __GenderState extends State<_Gender> {
             Radio(
                 value: 1,
                 groupValue: selectedRadio,
-                onChanged: (val) {
+                onChanged: (int val) {
                   setSelectedRadio(val);
-                  _Staff_Gender = val;
+                  _Staff_Gender = val as String;
                 }),
             Text(
               'Female',
@@ -507,9 +507,9 @@ class __GenderState extends State<_Gender> {
             Radio(
                 value: 2,
                 groupValue: selectedRadio,
-                onChanged: (val) {
+                onChanged: (int val) {
                   setSelectedRadio(val);
-                  _Staff_Gender = val;
+                  _Staff_Gender = val as String;
                 })
           ],
         ),
@@ -559,7 +559,7 @@ class __ShiftState extends State<_Shift> {
             Radio(
                 value: 1,
                 groupValue: selectedRadio,
-                onChanged: (val) {
+                onChanged: (int val) {
                   setSelectedRadio(val);
                 }),
             SizedBox(width: 20),
@@ -570,7 +570,7 @@ class __ShiftState extends State<_Shift> {
             Radio(
                 value: 2,
                 groupValue: selectedRadio,
-                onChanged: (val) {
+                onChanged: (int val) {
                   setSelectedRadio(val);
                 })
           ],
@@ -620,7 +620,7 @@ class __MaritalStState extends State<_MaritalSt> {
             Radio(
                 value: 1,
                 groupValue: selectedRadio,
-                onChanged: (val) {
+                onChanged: (int val) {
                   setSelectedRadio(val);
                   _Staff_MarritalSt = 'UnMarried';
                 }),
@@ -631,7 +631,7 @@ class __MaritalStState extends State<_MaritalSt> {
             Radio(
                 value: 2,
                 groupValue: selectedRadio,
-                onChanged: (val) {
+                onChanged: (int val) {
                   setSelectedRadio(val);
                   _Staff_MarritalSt = 'Married';
                 })

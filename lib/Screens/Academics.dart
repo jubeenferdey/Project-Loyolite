@@ -21,7 +21,8 @@ void main() {
   ));
 }
 
-TabController _tabController;
+// ignore: unused_element
+// TabController _tabController;
 
 @override
 class academics extends StatefulWidget {

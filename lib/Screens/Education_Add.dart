@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:loyolite/main.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:loyolite/Screens/Home/Signup_2.dart';
 import 'package:loyolite/Screens/Experience_Add.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(MaterialApp(
@@ -114,12 +116,13 @@ Widget _Name() {
   return TextFormField(
       decoration: InputDecoration(labelText: 'Qualification'),
       keyboardType: TextInputType.text,
-      validator: (String value) {
+      // ignore: missing_return
+      validator: (value) {
         if (value.isEmpty) {
           return "Name is Required";
         }
       },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }
@@ -128,12 +131,13 @@ Widget _Organization() {
   return TextFormField(
       decoration: InputDecoration(labelText: 'College / Place'),
       keyboardType: TextInputType.text,
-      validator: (String value) {
+      // ignore: missing_return
+      validator: (value) {
         if (value.isEmpty) {
           return "Organization is Required";
         }
       },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }
@@ -142,12 +146,13 @@ Widget _Duration() {
   return TextFormField(
       decoration: InputDecoration(labelText: 'Duration (eg: 2011-2012)'),
       keyboardType: TextInputType.text,
-      validator: (String value) {
+      // ignore: missing_return
+      validator: (value) {
         if (value.isEmpty) {
           return "Duration is Required";
         }
       },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }
@@ -156,14 +161,45 @@ Widget _Location() {
   return TextFormField(
       decoration: InputDecoration(labelText: 'Location (eg: Chennai)'),
       keyboardType: TextInputType.text,
-      validator: (String value) {
+      // ignore: missing_return
+      validator: (value) {
         if (value.isEmpty) {
           return "Location is Required";
         }
       },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
+}
+
+List<PlatformFile> _files;
+
+void uploadImage() async {
+  final uri =
+      Uri.parse('http://192.168.56.1/teachers_diary/lib/Db/fileupload.php');
+  var request = http.MultipartRequest('POST', uri);
+  request.fields['name'] = _files.first.path.toString().split("/").last;
+  request.fields['path'] = _files.first.path.toString();
+  var pic = await http.MultipartFile.fromPath(
+      "filePath", _files.first.path.toString());
+  request.files.add(pic);
+  var response = await request.send();
+
+  if (response.statusCode == 200) {
+    print(_files);
+    print('Image Uploded');
+  } else {
+    print('Image Not Uploded');
+  }
+  // setState(() {});
+}
+
+void _openFileExplorer() async {
+  _files = (await FilePicker.platform.pickFiles(
+          type: FileType.any, allowMultiple: false, allowedExtensions: null))
+      .files;
+
+  print('Loaded file path is : ${_files.first.path}');
 }
 
 //Snack Bar

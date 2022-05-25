@@ -19,7 +19,7 @@ void main() {
   ));
 }
 
-TabController _tabController;
+// TabController _tabController;
 
 @override
 class Responsibility extends StatefulWidget {

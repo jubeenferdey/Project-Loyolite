@@ -23,17 +23,16 @@ TextStyle titleStyle = new TextStyle(
     fontSize: 21, letterSpacing: 0.5, fontWeight: FontWeight.w400);
 TextStyle subTitleStyle = new TextStyle(fontSize: 15, color: Colors.black54);
 
-Future<List> getData() async {
-  var url = "http://192.168.0.106/API/getdata.php";
-  final response = await http.get(Uri.parse(url));
-  var dataRecieved = json.decode(response.body);
-  print(dataRecieved);
-  return (dataRecieved);
-}
+// Future<List> getData() async {
+//   var url = "http://192.168.0.106/API/getdata.php";
+//   final response = await http.get(Uri.parse(url));
+//   var dataRecieved = json.decode(response.body);
+//   print(dataRecieved);
+//   return (dataRecieved);
+// }
 
 class Profile extends StatelessWidget {
   @override
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

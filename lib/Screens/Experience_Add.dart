@@ -7,6 +7,12 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:loyolite/Screens/Home/Signup_2.dart';
 import 'package:loyolite/Screens/Certificate_Upload.dart';
 import 'package:loyolite/Screens/Academics.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:convert';
 
 void main() {
   runApp(MaterialApp(
@@ -119,7 +125,7 @@ Widget _Name() {
       //     return "Name is Required";
       //   }
       // },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }
@@ -133,7 +139,7 @@ Widget _Department() {
       //     return "Department is Required";
       //   }
       // },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }
@@ -147,7 +153,7 @@ Widget _Duration() {
       //     return "Duration is Required";
       //   }
       // },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }
@@ -161,7 +167,7 @@ Widget _Location() {
       //     return "Location is Required";
       //   }
       // },
-      onSaved: (String value) {
+      onSaved: (value) {
         //_Staff_Email = value;
       });
 }

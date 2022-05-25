@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:loyolite/Screens/Authentication/Firebase.dart';
 import 'package:loyolite/Screens/Education_Add.dart';
 import 'package:loyolite/Screens/Home/Signup_1.dart';
 import 'package:loyolite/Screens/Home/Home.dart';
-import 'package:loyolite/Services/auth.dart';
 import 'package:loyolite/main.dart';
-import 'package:loyolite/Services/auth.dart';
+import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:loyolite/models/user.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:loyolite/Screens/Authentication/authProvider.dart';
 
 void main() {
@@ -28,6 +28,10 @@ void main() {
 }
 
 String email = "", password = "";
+TextEditingController emailkey = TextEditingController();
+TextEditingController passwordkey = TextEditingController();
+final GlobalKey<FormState> emailformkey = GlobalKey<FormState>();
+final GlobalKey<FormState> passwordformkey = GlobalKey<FormState>();
 
 class MyApp extends StatelessWidget {
   @override
@@ -46,27 +50,7 @@ class WelcomePage extends StatefulWidget {
   _WelcomePageState createState() => _WelcomePageState();
 }
 
-TextEditingController emailkey = TextEditingController();
-TextEditingController passwordkey = TextEditingController();
-final GlobalKey<FormState> loginformkey = GlobalKey<FormState>();
-
 class _WelcomePageState extends State<WelcomePage> {
-  // Future<void> login() async {
-  //   try {
-  //     UserCredential usercredential = await FirebaseAuth.instance
-  //         .signInWithEmailAndPassword(
-  //             email: emailkey.text.trim(), password: passwordkey.text.trim());
-  //     print("Signed in Successfully");
-  //     loginformkey.currentState.save();
-
-  //     Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
-  //     return CircularProgressIndicator();
-  //   } catch (e) {
-  //     print("Invalid Email ID or Password");
-  //     print(e.toString());
-  //   }
-  // }
-
   int _pageState = 0;
 
   var _bgcolor = Colors.white;
@@ -117,7 +101,7 @@ class _WelcomePageState extends State<WelcomePage> {
     switch (_pageState) {
       case 0:
         _bgcolor = Colors.white;
-        _headingColor = Colors.blue[900];
+        _headingColor = Colors.blue;
         _subHeadingColor = Colors.black;
         _loginXoffset = 0;
         _loginYoffset = windowHeight;
@@ -131,7 +115,7 @@ class _WelcomePageState extends State<WelcomePage> {
         break;
 
       case 1:
-        _bgcolor = Colors.blue[800];
+        _bgcolor = Colors.blue;
         _headingColor = Colors.white;
         _subHeadingColor = Colors.white;
         _loginXoffset = 0;
@@ -147,7 +131,7 @@ class _WelcomePageState extends State<WelcomePage> {
         break;
 
       case 2:
-        _bgcolor = Colors.blue[800];
+        _bgcolor = Colors.blue;
         _headingColor = Colors.white;
         _subHeadingColor = Colors.white;
         _loginXoffset = 20;
@@ -165,6 +149,51 @@ class _WelcomePageState extends State<WelcomePage> {
         _createAccHeight = _keyboardVisible ? windowHeight : windowHeight - 270;
 
         break;
+    }
+
+    String url = "http://192.168.56.1/Project-Loyolite/lib/Db/signin.php";
+    Future<void> signIn() async {
+      print(url);
+      print(emailkey.text.trim());
+      print(passwordkey.text.trim());
+      var res = await http.post(Uri.parse(url), body: {
+        "email": emailkey.text,
+        "password": passwordkey.text,
+      });
+      var data = jsonDecode(res.body);
+      print("data: $data");
+      if (data == "Authenticated") {
+        Fluttertoast.showToast(
+            msg: "Authenticated",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black54,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        final snackBar = SnackBar(
+          content: Text('Welcome User :)'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        setState(() {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Home()));
+        });
+      } else if (data == "Auth Error") {
+        final snackBar = SnackBar(
+          content:
+              Text('No Such User Found. \nRecheck your Email ID and Password'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        // Fluttertoast.showToast(
+        //     msg: "No Such User Found. Recheck your Email ID and Password",
+        //     toastLength: Toast.LENGTH_LONG,
+        //     gravity: ToastGravity.SNACKBAR,
+        //     timeInSecForIosWeb: 1,
+        //     backgroundColor: Colors.black54,
+        //     textColor: Colors.white,
+        //     fontSize: 16.0);
+      }
     }
 
     return Expanded(
@@ -278,52 +307,59 @@ class _WelcomePageState extends State<WelcomePage> {
                     //   hint: "Institutional Mail",
                     //   loginformkey: emailkey,
                     // ),
-                    TextFormField(
-                      controller: emailkey,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(vertical: 23),
-                        labelText: "Instituitional Mail ID",
-                        //focusColor: Colors.blue[800],
-                        prefixIcon: Icon(Icons.email),
-                        border: OutlineInputBorder(
-                            // borderSide: BorderSide(color: Colors.blue[800], width: 2),
-                            borderRadius: BorderRadius.circular(50.0),
-                            gapPadding: 7.5),
+                    Form(
+                      key: emailformkey,
+                      child: TextFormField(
+                        controller: emailkey,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(vertical: 23),
+                          labelText: "Instituitional Mail ID",
+                          //focusColor: Colors.blue[800],
+                          prefixIcon: Icon(Icons.email),
+                          border: OutlineInputBorder(
+                              // borderSide: BorderSide(color: Colors.blue[800], width: 2),
+                              borderRadius: BorderRadius.circular(50.0),
+                              gapPadding: 7.5),
+                        ),
+                        //ignore:missing_return
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Mail is Required.';
+                          }
+                          return null;
+                        },
+                        onChanged: (String value) {
+                          email = value;
+                        },
                       ),
-                      //ignore:missing_return
-                      validator: (String value) {
-                        if (value.isEmpty) {
-                          return 'Mail is Required.';
-                        }
-                      },
-                      onChanged: (String value) {
-                        email = value;
-                      },
                     ),
                     SizedBox(height: 22.5),
-                    TextFormField(
-                      key: loginformkey,
-                      obscureText: true,
-                      controller: passwordkey,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(vertical: 23),
-                        labelText: 'Password',
-                        prefixIcon: Icon(Icons.password),
-                        border: OutlineInputBorder(
-                            // borderSide:
-                            //     BorderSide(color: Colors.blueAccent, width: 32.0),
-                            borderRadius: BorderRadius.circular(50.0),
-                            gapPadding: 7.5),
+                    Form(
+                      key: passwordformkey,
+                      child: TextFormField(
+                        obscureText: true,
+                        controller: passwordkey,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(vertical: 23),
+                          labelText: 'Password',
+                          prefixIcon: Icon(Icons.password),
+                          border: OutlineInputBorder(
+                              // borderSide:
+                              //     BorderSide(color: Colors.blueAccent, width: 32.0),
+                              borderRadius: BorderRadius.circular(50.0),
+                              gapPadding: 7.5),
+                        ),
+                        // ignore: missing_return
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Password is Required.';
+                          }
+                          return null;
+                        },
+                        onChanged: (String value) {
+                          password = value;
+                        },
                       ),
-                      // ignore: missing_return
-                      validator: (String value) {
-                        if (value.isEmpty) {
-                          return 'Password is Required.';
-                        }
-                      },
-                      onChanged: (String value) {
-                        password = value;
-                      },
                     ),
 
                     // GetPassword(
@@ -331,40 +367,21 @@ class _WelcomePageState extends State<WelcomePage> {
                     SizedBox(
                       height: 20,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          // //_pageState = 3;
-                          // context.read<AuthenticationService>().signIn(
-                          //       email: emailkey.text.trim(),
-                          //       password: passwordkey.text.trim(),
-                          //       context: context,
-                          // );
-                          // Navigator.push(context,
-                          //     MaterialPageRoute(builder: (context) => Home()));
-                        });
-                      },
-                      child: Container(
-                          child: Text(
-                        'Forgot Password',
-                        style: TextStyle(fontSize: 15, color: Colors.grey[600]),
-                      )),
-                    ),
-                    SizedBox(height: 10),
                     Expanded(
                       child: Column(
                         children: [
                           GestureDetector(
                             onTap: () {
-                              // if (!loginformkey.currentState.validate()) {
-                              //   return;
-                              // }
+                              if ((emailformkey.currentState.validate()) &&
+                                  (passwordformkey.currentState.validate())) {
+                                signIn();
+                              }
                               setState(() {
-                                context.read<AuthenticationService>().signIn(
-                                    email: emailkey.text.trim(),
-                                    password: passwordkey.text.trim(),
-                                    context: context,
-                                    key: loginformkey);
+                                // context.read<AuthenticationService>().signIn(
+                                //     email: emailkey.text.trim(),
+                                //     password: passwordkey.text.trim(),
+                                //     context: context,
+                                //     key: loginformkey);
                               });
 
                               // Navigator.push(context,
@@ -373,8 +390,8 @@ class _WelcomePageState extends State<WelcomePage> {
                               // context.read<AuthenticationService>().signIn(
                               //     email: emailkey.text.trim(),
                               //     password: passwordkey.text.trim());
-                              print(emailkey.text.trim());
-                              print(passwordkey.text.trim());
+                              // print(emailkey.text.trim());
+                              // print(passwordkey.text.trim());
                             },
                             child: PrimaryButton(buttonName: "Login"),
                           ),
@@ -423,7 +440,7 @@ class _GetEmailState extends State<GetEmail> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey[400], width: 2),
+          border: Border.all(color: Colors.grey, width: 2),
           borderRadius: BorderRadius.circular(50)),
       child: Container(
         child: Row(
@@ -468,7 +485,7 @@ class _GetEmail1State extends State<GetPassword> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey[400], width: 2),
+          border: Border.all(color: Colors.grey, width: 2),
           borderRadius: BorderRadius.circular(50)),
       child: Container(
         child: Row(
@@ -491,6 +508,27 @@ class _GetEmail1State extends State<GetPassword> {
             ))
           ],
         ),
+      ),
+    );
+  }
+}
+
+// Snackbar
+class SnackBarPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ElevatedButton(
+        onPressed: () {
+          final snackBar = SnackBar(
+            content: Text('Publication Uploaded Successfully.'),
+          );
+
+          // Find the ScaffoldMessenger in the widget tree
+          // and use it to show a SnackBar.
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        },
+        child: Text('Done'),
       ),
     );
   }
