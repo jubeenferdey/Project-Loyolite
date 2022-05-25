@@ -23,6 +23,10 @@ void main() {
   ));
 }
 
+TextEditingController certTitle = new TextEditingController();
+TextEditingController location = new TextEditingController();
+TextEditingController issuedYear = new TextEditingController();
+
 class CertificateAdd extends StatefulWidget {
   @override
   _CertificateAddState createState() => _CertificateAddState();
@@ -30,6 +34,7 @@ class CertificateAdd extends StatefulWidget {
 
 class _CertificateAddState extends State<CertificateAdd> {
   final GlobalKey<FormState> _formkey2 = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,6 +129,7 @@ class _CertificateAddState extends State<CertificateAdd> {
 // Mail
 Widget _Name() {
   return TextFormField(
+      controller: certTitle,
       decoration: InputDecoration(labelText: 'Certificate Title (eg. NET) '),
       keyboardType: TextInputType.text,
       // validator: (String value) {
@@ -154,6 +160,7 @@ Widget _Description() {
 
 Widget _Duration() {
   return TextFormField(
+      controller: issuedYear,
       decoration: InputDecoration(labelText: 'Certificate Issued Year '),
       keyboardType: TextInputType.text,
       // validator: (String value) {
@@ -168,6 +175,7 @@ Widget _Duration() {
 
 Widget _Location() {
   return TextFormField(
+      controller: location,
       decoration: InputDecoration(labelText: 'Location (eg: Chennai)'),
       keyboardType: TextInputType.text,
       // validator: (String value) {
@@ -191,10 +199,26 @@ class _AttachmentContainerState extends State<AttachmentContainer> {
   @override
   Widget build(BuildContext context) {
     List<PlatformFile> _files;
+    String url =
+        "http://192.168.56.1/Project-Loyolite/lib/Db/uploads/certAdd.php";
+    Future<void> certDetailsUpload() async {
+      print(url);
+      print(certTitle.text.trim());
+      print(issuedYear.text.trim());
+      print(location.text.trim());
+      var res = await http.post(Uri.parse(url), body: {
+        "title": certTitle.text,
+        "location": location.text,
+        "year": issuedYear.text,
+      });
+      var data = jsonDecode(jsonEncode(res.body));
+      print("data: $data");
+      return data;
+    }
 
     void uploadImage() async {
       final uri = Uri.parse(
-          'http://192.168.56.1/Project-Loyolite/lib/Db/fileupload.php');
+          'http://192.168.56.1/Project-Loyolite/lib/Db/uploads/certAdd.php');
       var request = http.MultipartRequest('POST', uri);
       request.fields['name'] = _files.first.path.toString().split("/").last;
       request.fields['path'] = _files.first.path.toString();
@@ -203,7 +227,7 @@ class _AttachmentContainerState extends State<AttachmentContainer> {
       request.files.add(pic);
       var response = await request.send();
 
-      if (response.statusCode == 200) {
+      if ((response.statusCode == 200)) {
         print(_files);
         print('Image Uploded');
         final snackBar = SnackBar(
@@ -222,6 +246,12 @@ class _AttachmentContainerState extends State<AttachmentContainer> {
         setState(() {
           Navigator.pop(context);
         });
+      }
+
+      if (certDetailsUpload() == "Success") {
+        print("Certification Upload Succes");
+      } else if (certDetailsUpload() == "Error") {
+        print("Error in Uploading the Certification Details");
       }
     }
     // setState(() {});
