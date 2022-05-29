@@ -1,12 +1,18 @@
 import 'package:flutter/cupertino.dart';
+import 'package:loyolite/Screens/Certificate_Upload.dart';
 import 'package:loyolite/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:loyolite/Screens/Home/Signup_1.dart';
 import 'package:loyolite/Screens/Home/Signup_2.dart';
-
 import 'package:flutter/rendering.dart';
+import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:io';
+import 'dart:convert';
 
 void main() {
   runApp(MaterialApp(
@@ -14,6 +20,12 @@ void main() {
     home: responsiblityAdd(),
   ));
 }
+
+String ResponsibiltyChoose;
+TextEditingController Name = new TextEditingController();
+TextEditingController Organization = new TextEditingController();
+TextEditingController Duration = new TextEditingController();
+TextEditingController Location = new TextEditingController();
 
 class responsiblityAdd extends StatefulWidget {
   @override
@@ -24,6 +36,51 @@ class _responsiblityAddState extends State<responsiblityAdd> {
   final GlobalKey<FormState> _formkey2 = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    Future<void> responibiltyAdd() async {
+      String url =
+          "http://192.168.56.1/Project-Loyolite/lib/Db/uploads/responsibilitiesAdd.php";
+      print(url);
+      // print(title.text.trim());
+      // print(patentID.text.toString());
+      // print(year.text.trim());
+      var res = await http.post(Uri.parse(url), body: {
+        "name": Name.text,
+        "organization": Organization.text,
+        "duration": Duration.text,
+        "location": Location.text,
+        "role": ResponsibiltyChoose
+      });
+      var data = jsonDecode(jsonEncode(res.body));
+      print("data: $data");
+      if (data == "Success") {
+        // Fluttertoast.showToast(
+        //     msg: "Data Stored Succesfully",
+        //     toastLength: Toast.LENGTH_LONG,
+        //     gravity: ToastGravity.CENTER,
+        //     timeInSecForIosWeb: 1,
+        //     backgroundColor: Colors.black54,
+        //     textColor: Colors.white,
+        //     fontSize: 16.0);
+        final snackBar = SnackBar(
+          content: Text('Responsibilites Added'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else if (data == "Error") {
+        Fluttertoast.showToast(
+            msg: "Failed to Write Data",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black54,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        final snackBar = SnackBar(
+          content: Text('Error in Uploading your Responsibilites.'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
@@ -60,7 +117,7 @@ class _responsiblityAddState extends State<responsiblityAdd> {
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    "Add a New Responsiblity",
+                    "Add a New Responsiblity, stating whether it's Inside or Outside Loyola",
                     style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
@@ -76,31 +133,14 @@ class _responsiblityAddState extends State<responsiblityAdd> {
                   _Location(),
                   SizedBox(height: 15),
                   ResponsibilityType(),
-                  //_Password(),
-                  // SizedBox(
-                  //   height: 100,
-                  // ),
-                  // _PasswordCheck(),
-                  // SizedBox(
-                  //   height: 100,
-                  // ),
-                  SizedBox(height: 60),
-
-                  SnackBarPage(),
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     if (!_formkey2.currentState.validate()) {
-                  //       return;
-                  //     }
-                  //     setState(() {
-                  //       Navigator.push(
-                  //           context,
-                  //           MaterialPageRoute(
-                  //               builder: (context) => EducationAdd()));
-                  //       _formkey2.currentState.reset();
-                  //     });
-                  //   },
-                  //child: PrimaryButton(buttonName: "Upload"),
+                  SizedBox(height: 40),
+                  GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          responibiltyAdd();
+                        });
+                      },
+                      child: PrimaryButton(buttonName: "Upload"))
                 ],
               ),
             ),
@@ -114,6 +154,7 @@ class _responsiblityAddState extends State<responsiblityAdd> {
 // Mail
 Widget _Name() {
   return TextFormField(
+      controller: Name,
       decoration: InputDecoration(labelText: 'Name'),
       keyboardType: TextInputType.text,
       // validator: (String value) {
@@ -128,6 +169,7 @@ Widget _Name() {
 
 Widget _Organization() {
   return TextFormField(
+      controller: Organization,
       decoration: InputDecoration(labelText: 'Organization'),
       keyboardType: TextInputType.text,
       // validator: (String value) {
@@ -142,6 +184,7 @@ Widget _Organization() {
 
 Widget _Duration() {
   return TextFormField(
+      controller: Duration,
       decoration: InputDecoration(labelText: 'Duration (eg: 2011-2012)'),
       keyboardType: TextInputType.text,
       // validator: (String value) {
@@ -156,6 +199,7 @@ Widget _Duration() {
 
 Widget _Location() {
   return TextFormField(
+      controller: Location,
       decoration: InputDecoration(labelText: 'Location (eg: Chennai)'),
       keyboardType: TextInputType.text,
       // validator: (String value) {
@@ -192,7 +236,7 @@ class _ResponsibilityTypeState extends State<ResponsibilityType> {
                 Container(
                   padding: const EdgeInsets.all(0.0),
                   child: DropdownButton<String>(
-                    value: valueChoose,
+                    value: ResponsibiltyChoose,
                     elevation: 5,
                     style: TextStyle(
                       fontSize: 17.5,
@@ -216,7 +260,7 @@ class _ResponsibilityTypeState extends State<ResponsibilityType> {
                     ),
                     onChanged: (value) {
                       setState(() {
-                        valueChoose = value;
+                        ResponsibiltyChoose = value;
                         //_Staff_Designation = value;
                       });
                     },
@@ -231,22 +275,22 @@ class _ResponsibilityTypeState extends State<ResponsibilityType> {
   }
 }
 
-class SnackBarPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: ElevatedButton(
-        onPressed: () {
-          final snackBar = SnackBar(
-            content: Text('Record Updated Successfully.'),
-          );
+// class SnackBarPage extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Center(
+//       child: ElevatedButton(
+//         onPressed: () {
+//           final snackBar = SnackBar(
+//             content: Text('Record Updated Successfully.'),
+//           );
 
-          // Find the ScaffoldMessenger in the widget tree
-          // and use it to show a SnackBar.
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        },
-        child: Text('Done'),
-      ),
-    );
-  }
-}
+//           // Find the ScaffoldMessenger in the widget tree
+//           // and use it to show a SnackBar.
+//           ScaffoldMessenger.of(context).showSnackBar(snackBar);
+//         },
+//         child: Text('Done'),
+//       ),
+//     );
+//   }
+// }

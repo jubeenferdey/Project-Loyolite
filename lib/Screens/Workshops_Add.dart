@@ -8,6 +8,12 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:loyolite/Screens/Home/Signup_2.dart';
 import 'package:loyolite/Screens/Certificate_Upload.dart';
 import 'package:loyolite/Screens/Academics.dart';
+import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:io';
+import 'dart:convert';
 
 void main() {
   runApp(MaterialApp(
@@ -16,6 +22,14 @@ void main() {
   ));
 }
 
+String eventLevel;
+
+TextEditingController Title = new TextEditingController();
+TextEditingController Lcoation = new TextEditingController();
+TextEditingController Duration = new TextEditingController();
+TextEditingController Description = new TextEditingController();
+// TextEditingController EventLevel = new TextEditingController();
+
 class WorkshopAdd extends StatefulWidget {
   @override
   _WorkshopAddState createState() => _WorkshopAddState();
@@ -23,8 +37,54 @@ class WorkshopAdd extends StatefulWidget {
 
 class _WorkshopAddState extends State<WorkshopAdd> {
   final GlobalKey<FormState> _formkey2 = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
+    Future<void> eventUpload() async {
+      String url =
+          "http://192.168.56.1/Project-Loyolite/lib/Db/uploads/eventAdd.php";
+      print(url);
+      // print(title.text.trim());
+      // print(patentID.text.toString());
+      // print(year.text.trim());
+      var res = await http.post(Uri.parse(url), body: {
+        "title": Title.text,
+        "location": Lcoation.text,
+        "duration": Duration.text,
+        "description": Description.text,
+        "eventLevel": eventLevel
+      });
+      var data = jsonDecode(res.body.toString());
+      print("data: $data");
+      if (data == "Success") {
+        // Fluttertoast.showToast(
+        //     msg: "Data Stored Succesfully",
+        //     toastLength: Toast.LENGTH_LONG,
+        //     gravity: ToastGravity.CENTER,
+        //     timeInSecForIosWeb: 1,
+        //     backgroundColor: Colors.black54,
+        //     textColor: Colors.white,
+        //     fontSize: 16.0);
+        final snackBar = SnackBar(
+          content: Text('Event Details Added'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else if (data == "Error") {
+        // Fluttertoast.showToast(
+        //     msg: "Failed to Write Data",
+        //     toastLength: Toast.LENGTH_LONG,
+        //     gravity: ToastGravity.CENTER,
+        //     timeInSecForIosWeb: 1,
+        //     backgroundColor: Colors.black54,
+        //     textColor: Colors.white,
+        //     fontSize: 16.0);
+        final snackBar = SnackBar(
+          content: Text('Error in Uploading your Event Details.'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
@@ -93,10 +153,11 @@ class _WorkshopAddState extends State<WorkshopAdd> {
                         return;
                       }
                       setState(() {
-                        showModalBottomSheet(
-                            backgroundColor: Colors.transparent,
-                            context: context,
-                            builder: (builder) => AttachmentContainer());
+                        eventUpload();
+                        // showModalBottomSheet(
+                        //     backgroundColor: Colors.transparent,
+                        //     context: context,
+                        //     builder: (builder) => AttachmentContainer());
                         // Navigator.push(
                         // context,
                         // MaterialPageRoute(
@@ -119,6 +180,7 @@ class _WorkshopAddState extends State<WorkshopAdd> {
 // Mail
 Widget _Name() {
   return TextFormField(
+      controller: Title,
       decoration: InputDecoration(labelText: 'Title of the Event'),
       keyboardType: TextInputType.text,
       // validator: (String value) {
@@ -126,13 +188,14 @@ Widget _Name() {
       //     return "Name is Required";
       //   }
       // },
-      onSaved: (value) {
+      onSaved: (String value) {
         //_Staff_Email = value;
       });
 }
 
 Widget _Description() {
   return TextFormField(
+      controller: Description,
       decoration: InputDecoration(labelText: 'Description about the Event'),
       keyboardType: TextInputType.streetAddress,
       maxLength: 300,
@@ -141,13 +204,14 @@ Widget _Description() {
       //     return "Department is Required";
       //   }
       // },
-      onSaved: (value) {
+      onSaved: (String value) {
         //_Staff_Email = value;
       });
 }
 
 Widget _Duration() {
   return TextFormField(
+      controller: Duration,
       decoration: InputDecoration(
           labelText: 'Duration (eg: 1 Hour, 3 days for Workshops )'),
       keyboardType: TextInputType.text,
@@ -156,13 +220,14 @@ Widget _Duration() {
       //     return "Duration is Required";
       //   }
       // },
-      onSaved: (value) {
+      onSaved: (String value) {
         //_Staff_Email = value;
       });
 }
 
 Widget _Location() {
   return TextFormField(
+      controller: Lcoation,
       decoration: InputDecoration(labelText: 'Location (eg: Chennai)'),
       keyboardType: TextInputType.text,
       // validator: (String value) {
@@ -170,7 +235,7 @@ Widget _Location() {
       //     return "Location is Required";
       //   }
       // },
-      onSaved: (value) {
+      onSaved: (String value) {
         //_Staff_Email = value;
       });
 }
@@ -200,7 +265,7 @@ class _WorkshopTypeState extends State<WorkshopType> {
                 Container(
                   padding: const EdgeInsets.all(0.0),
                   child: DropdownButton<String>(
-                    value: valueChoose,
+                    value: eventLevel,
                     elevation: 5,
                     style: TextStyle(
                       fontSize: 17.5,
@@ -226,9 +291,9 @@ class _WorkshopTypeState extends State<WorkshopType> {
                           //fontWeight: FontWeight.w600,
                           fontFamily: 'Nunito'),
                     ),
-                    onChanged: (value) {
+                    onChanged: (String value) {
                       setState(() {
-                        valueChoose = value;
+                        eventLevel = value;
                         //_Staff_Designation = value;
                       });
                     },
@@ -264,12 +329,12 @@ class _AttachmentContainerState extends State<AttachmentContainer> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      iconCreation(Icons.add, Colors.grey, 'Add'),
+                      iconCreation(Icons.add, Colors.grey[600], 'Add'),
                       SizedBox(width: 60),
-                      iconCreation(Icons.link, Colors.grey, 'Link'),
+                      iconCreation(Icons.link, Colors.grey[600], 'Link'),
                       SizedBox(width: 60),
                       iconCreation(
-                          Icons.drive_folder_upload, Colors.grey, 'Drive')
+                          Icons.drive_folder_upload, Colors.grey[600], 'Drive')
                     ],
                   )
                 ],

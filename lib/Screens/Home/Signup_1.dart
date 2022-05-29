@@ -45,12 +45,12 @@ String Staff_PhNum = "";
 String Staff_Email = "";
 String Staff_Address = "";
 String Staff_Dept = "";
-String Staff_Designation = "";
+String Staff_Designation;
 String Staff_MarritalSt = "";
 String Staff_Responsiblity = "";
 String Staff_ID = "";
 
-String valueChoose = '';
+String valueChoose;
 
 class CreateAccount1 extends StatefulWidget {
   @override
@@ -304,7 +304,7 @@ class __DesignationState extends State<_Designation> {
                 Container(
                   padding: const EdgeInsets.all(0.0),
                   child: DropdownButton<String>(
-                    value: valueChoose,
+                    value: Staff_Designation,
                     elevation: 5,
                     style: TextStyle(
                       fontSize: 17.5,
@@ -331,7 +331,6 @@ class __DesignationState extends State<_Designation> {
                     ),
                     onChanged: (value) {
                       setState(() {
-                        valueChoose = value;
                         Staff_Designation = value;
                       });
                     },

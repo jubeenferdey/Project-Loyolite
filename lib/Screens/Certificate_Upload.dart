@@ -9,6 +9,7 @@ import 'package:loyolite/Screens/Home/Signup_2.dart';
 import 'package:loyolite/Screens/Workshop_Certificate_Upload.dart';
 import 'dart:io';
 import 'dart:convert';
+import 'package:loyolite/Screens/Home/RootScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -199,9 +200,10 @@ class _AttachmentContainerState extends State<AttachmentContainer> {
   @override
   Widget build(BuildContext context) {
     List<PlatformFile> _files;
-    String url =
-        "http://192.168.56.1/Project-Loyolite/lib/Db/uploads/certAdd.php";
+
     Future<void> certDetailsUpload() async {
+      String url =
+          "http://192.168.56.1/Project-Loyolite/lib/Db/uploads/certAdd.php";
       print(url);
       print(certTitle.text.trim());
       print(issuedYear.text.trim());
@@ -210,15 +212,34 @@ class _AttachmentContainerState extends State<AttachmentContainer> {
         "title": certTitle.text,
         "location": location.text,
         "year": issuedYear.text,
+        "email": emailkey.text
       });
       var data = jsonDecode(jsonEncode(res.body));
       print("data: $data");
-      return data;
+      if (data == "Success") {
+        Fluttertoast.showToast(
+            msg: "Data Stored Succesfully",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black54,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else if (data == "Error") {
+        Fluttertoast.showToast(
+            msg: "Failed to Write Data",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black54,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
     }
 
     void uploadImage() async {
       final uri = Uri.parse(
-          'http://192.168.56.1/Project-Loyolite/lib/Db/uploads/certAdd.php');
+          'http://192.168.56.1/Project-Loyolite/lib/Db/uploads/certFileUpload.php');
       var request = http.MultipartRequest('POST', uri);
       request.fields['name'] = _files.first.path.toString().split("/").last;
       request.fields['path'] = _files.first.path.toString();
@@ -230,6 +251,7 @@ class _AttachmentContainerState extends State<AttachmentContainer> {
       if ((response.statusCode == 200)) {
         print(_files);
         print('Image Uploded');
+
         final snackBar = SnackBar(
           content: Text('File Uploaded Successfully.'),
         );
@@ -247,12 +269,6 @@ class _AttachmentContainerState extends State<AttachmentContainer> {
           Navigator.pop(context);
         });
       }
-
-      if (certDetailsUpload() == "Success") {
-        print("Certification Upload Succes");
-      } else if (certDetailsUpload() == "Error") {
-        print("Error in Uploading the Certification Details");
-      }
     }
     // setState(() {});
 
@@ -264,6 +280,7 @@ class _AttachmentContainerState extends State<AttachmentContainer> {
           .files;
 
       print('Loaded file path is : ${_files.first.path}');
+      // certDetailsUpload();
       uploadImage();
     }
 
@@ -273,28 +290,25 @@ class _AttachmentContainerState extends State<AttachmentContainer> {
           width: MediaQuery.of(context).size.width,
           child: Card(
             margin: EdgeInsets.all(20),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 80),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                          onTap: () => {
-                                _openFileExplorer(),
-                              },
-                          child:
-                              iconCreation(Icons.add, Colors.grey[600], 'Add')),
-                      SizedBox(width: 60),
-                      iconCreation(Icons.link, Colors.grey[600], 'Link'),
-                      SizedBox(width: 60),
-                      // iconCreation(
-                      //     Icons.drive_folder_upload, Colors.grey[600], 'Drive')
-                    ],
-                  )
-                ],
-              ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                        onTap: () => {
+                              _openFileExplorer(),
+                            },
+                        child:
+                            iconCreation(Icons.add, Colors.grey[600], 'Add')),
+                    SizedBox(width: 60),
+                    iconCreation(Icons.link, Colors.grey[600], 'Link'),
+                    SizedBox(width: 60),
+                    // iconCreation(
+                    //     Icons.drive_folder_upload, Colors.grey[600], 'Drive')
+                  ],
+                )
+              ],
             ),
           ),
         ),
